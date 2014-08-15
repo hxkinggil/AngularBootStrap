@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="">
+<head>
+    <meta charset="utf-8">
+    <title>Google Phone Gallery</title>
+    <script type='text/javascript' src="../js/jquery/jquery-2.1.1.min.js"></script>
+    <script type='text/javascript' src="../angular-1.2.20/angular.min.js"></script>
+    <script>
+        var g ;
+        function test($scope,$http,$compile)
+        {
+            $scope.tryget = function(){
+
+                var iframeContentWindow = $("#iframe")[0].contentWindow;
+                var iframeDOM = $("#iframe")[0].contentWindow.document;
+                var target = $(iframeDOM).find("#test2");
+                var iframeAngular = iframeContentWindow.angular;
+                var iframeScope = iframeAngular.element("#test2").scope();
+                iframeScope.parentcall();
+                iframeContentWindow.angular.element("#test2").scope().tempvalue = 66 ;
+                iframeScope.tempvalue = 66;
+                iframeContentWindow.tt = 22;
+                iframeScope.parentcall();
+                console.log(iframeScope.tempvalue);
+                console.log(angular.element("#cont").scope());
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+<div ng-controller="test">
+    <div id="cont" >
+        <button ng-click="tryget()">try</button>
+    </div>
+</div>
+<iframe src="test2.html" id="iframe"></iframe>
+
+</body>
+</html>
