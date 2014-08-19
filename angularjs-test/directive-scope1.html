@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>隔离空间和父作用域属性间的绑定</title>
+</head>
+<body ng-app="app">
+<div align="center" style="margin-top: 200px;">
+
+    <input type="text" ng-model="color" placeholder="Enter a color"/>
+
+    <!-- 方法1
+    <hello-world color='{{color}}'/>
+    -->
+    <!-- 方法2 -->
+    <hello-world color="color"/>
+
+
+</div>
+
+
+</body>
+<script src="../angular-1.2.20/angular.min.js"></script>
+<script src="directive-scope1.js"></script>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Transclude变换示例3</title>
+    <style>
+
+        .expander {
+            border: 1px solid black;
+            width: 250px;
+        }
+
+        .expander > .title {
+            background-color: black;
+            color: white;
+            padding: .1em .3em;
+            cursor: pointer;
+        }
+
+        .expander > .body {
+            padding: .1em .3em;
+        }
+
+    </style>
+</head>
+<body ng-app="expanderModule">
+
+<accordion ng-controller='SomeController'>
+    <expander class='expander' ng-repeat='expander in expanders' expander-title='expander.title'>
+        {{expander.text}}
+    </expander>
+</accordion>
+
+
+</body>
+
+<script src="../angular-1.2.20/angular.min.js"></script>
+<script src="transclude3.js"></script>
+</html>
