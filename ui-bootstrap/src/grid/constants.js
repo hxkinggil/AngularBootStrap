@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  angular.module('ui.grid').constant('gridConstants', {
+  angular.module('ui.bootstrap.grid').constant('gridConstants', {
     CUSTOM_FILTERS: /CUSTOM_FILTERS/g,
     COL_FIELD: /COL_FIELD/g,
     DISPLAY_CELL_TEMPLATE: /DISPLAY_CELL_TEMPLATE/g,

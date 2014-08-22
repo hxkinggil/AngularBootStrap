@@ -1,9 +1,10 @@
-<tbody>
-<tr ng-repeat="question in questions">
-    <td>{{$index+1}}</td>
-    <td>{{question.title}}</td>
-    <td>{{question.startDate | date : 'yyyy-MM-dd'}}</td>
-    <td>{{question.endDate 	 | date : 'yyyy-MM-dd' }}</td>
-    <td>{{question.enterDate | date : 'yyyy-MM-dd'}}</td>
+<table>
+<thead>
+<tr class="sequence">
+    <th ng-repeat="col in columns">
+        {{col.displayName}}
+    </th>
 </tr>
-</tbody>
+</thead>
+<grid-row></grid-row>
+</table>

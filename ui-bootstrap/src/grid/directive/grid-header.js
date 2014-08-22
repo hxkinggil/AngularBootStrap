@@ -4,29 +4,28 @@
 (function () {
     'use strict';
 
-    angular.module('ui.bootstrap.grid.header', [])
+    angular.module('ui.bootstrap.grid')
 
         .constant('gridHeaderConfig', {
 
         })
 
         .controller('GridHeaderController',['$scope', '$element', '$attrs', '$log', function ($scope, $elm, $attrs, $log) {
-
+            $scope.title = "111";
         }])
 
         .directive('gridHeader', function () {
             return {
-                restrict:'EA',
+                restrict:'E',
                 controller:'GridHeaderController',
-                templateUrl:'template/grid/grid-header.html',
+                templateUrl:'../../template/grid/grid-header.html',
                 transclude:true,
                 replace:true,
+                require: '^?grid',
                 scope: {
-                    type: '@',
-                    close: '&'
                 },
-                link: function (scope, element, attrs) {
-
+                link: function (scope, element, attrs,gridCtrl) {
+                    scope.title = gridCtrl.grid.options.title;
                 }
             };
         });
