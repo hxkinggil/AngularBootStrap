@@ -2,8 +2,8 @@
 {
 
     angular.module( 'ui.bootstrap.grid' )
-        .factory( 'Grid' , ['$log', '$q', '$compile', '$parse', 'gridConstants', 'GridOptions', 'GridColumn', 'GridRow','gridUtil',
-            function ( $log , $q , $compile , $parse , gridConstants , GridOptions , GridColumn , GridRow ,gridUtil)
+        .factory( 'Grid' , ['$log', '$q', '$compile', '$parse', 'gridConstants', 'GridOptions', 'GridColumn', 'GridRow', 'gridUtil',
+            function ( $log , $q , $compile , $parse , gridConstants , GridOptions , GridColumn , GridRow , gridUtil )
             {
 
                 var Grid = function Grid( options )
@@ -39,6 +39,10 @@
                     this.columnsProcessors = [];
                     this.styleComputations = [];
                     this.viewportAdjusters = [];
+
+                    //如果有标题就显示表头,没有就不显示
+                    this.options.title ? this.isHeaderShow = true : this.isHeaderShow = false;
+
 
                     // this.visibleRowCache = [];
 
@@ -120,10 +124,12 @@
                     this.options.columnDefs = gridUtil.getColumnsFromData( dataRows , this.options.excludeProperties );
                 };
 
-                Grid.prototype.addRows = function(newRawData) {
+                Grid.prototype.addRows = function ( newRawData )
+                {
                     var self = this;
                     var existingRowCount = self.rows.length;
-                    for (var i=0; i < newRawData.length; i++) {
+                    for ( var i = 0; i < newRawData.length; i++ )
+                    {
 //                        var newRow = self.processRowBuilders(new GridRow(newRawData[i], i + existingRowCount, self));
 //
 //                        if (self.options.enableRowHashing) {
@@ -132,28 +138,33 @@
 //                                found.row = newRow;
 //                            }
 //                        }
-                        var a = new GridRow(newRawData[i], i + existingRowCount, self);
-                        self.rows.push(a);
+                        var a = new GridRow( newRawData[i] , i + existingRowCount , self );
+                        self.rows.push( a );
                     }
                 };
 
-                Grid.prototype.assignTypes = function(){
+                Grid.prototype.assignTypes = function ()
+                {
                     var self = this;
-                    self.options.columnDefs.forEach(function (colDef, index) {
+                    self.options.columnDefs.forEach( function ( colDef , index )
+                    {
 
                         //Assign colDef type if not specified
-                        if (!colDef.type) {
-                            var col = new GridColumn(colDef, index, self);
+                        if ( !colDef.type )
+                        {
+                            var col = new GridColumn( colDef , index , self );
                             var firstRow = self.rows.length > 0 ? self.rows[0] : null;
-                            if (firstRow) {
-                                colDef.type = gridUtil.guessType(self.getCellValue(firstRow, col));
+                            if ( firstRow )
+                            {
+                                colDef.type = gridUtil.guessType( self.getCellValue( firstRow , col ) );
                             }
-                            else {
-                                $log.log('Unable to assign type from data, so defaulting to string');
+                            else
+                            {
+                                $log.log( 'Unable to assign type from data, so defaulting to string' );
                                 colDef.type = 'string';
                             }
                         }
-                    });
+                    } );
                 };
 
                 return Grid;

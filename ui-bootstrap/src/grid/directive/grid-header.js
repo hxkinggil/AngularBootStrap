@@ -26,6 +26,7 @@
                 },
                 link: function (scope, element, attrs,gridCtrl) {
                     scope.title = gridCtrl.grid.options.title;
+                    scope.isHeaderShow = gridCtrl.grid.isHeaderShow;
                 }
             };
         });
