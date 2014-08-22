@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Grid Demo</title>
+    <link   href="../../../bootstrap-3.2.0/css/bootstrap.css" rel="stylesheet">
+    <script src="../../../js/jquery/jquery-2.1.1.min.js"></script>
+    <script src="../../../bootstrap-3.2.0/js/bootstrap.js"></script>
+    <script src="../../../angular-1.2.20/angular.js"></script>
+    <script src="directive/grid.js"></script>
+    <script src="services/gridClassFactory.js"></script>
+    <script src="services/gridUtil.js"></script>
+    <script src="constants.js"></script>
+    <script src="directive/grid-header.js"></script>
+    <script src="directive/grid-column.js"></script>
+    <script src="directive/grid-row.js"></script>
+    <script src="factories/Grid.js"></script>
+    <script src="factories/GridOptions.js"></script>
+    <script src="factories/GridColumn.js"></script>
+    <script src="factories/GridRow.js"></script>
+
+
+</head>
+<body ng-app="test" ng-controller="Main">
+<div style="width: 800px;height: 100px;margin-left: 400px;margin-top: 100px;" >
+
+  <grid grid-options="gridOptions"></grid>
+
+</div>
+</body>
+<script>
+    var app = angular.module('test', ['ui.bootstrap.grid']);
+
+    app.controller('Main', function($scope, $http) {
+        // $scope.gridOptions = { data: 'data' };
+        $scope.gridOptions = {};
+
+
+        $scope.gridOptions.title = "2014世界杯调查问卷";
+        $scope.gridOptions.columnDefs = [{name:"编号", field:"id"},{name:"姓", field:"lastName"}, {name:"名字", field:"firstName"},{name:"年龄",field:"age"},{name:"公司",field:"company"} ];
+
+
+        $scope.gridOptions.data = [
+            {
+                "id": 0,
+                "age": 31,
+                "firstName": "Smith",
+                "lastName": "Pena",
+                "company": "Xplor",
+                "employed": false
+            },
+            {
+                "id": 1,
+                "age": 21,
+                "firstName": "Sadie",
+                "lastName": "Lowery",
+                "company": "Quinex",
+                "employed": true
+            },
+            {
+                "id": 2,
+                "age": 21,
+                "firstName": "Sadie",
+                "lastName": "Lowery",
+                "company": "Quinex",
+                "employed": true
+            },
+            {
+                "id": 3,
+                "age": 21,
+                "firstName": "Sadie",
+                "lastName": "Lowery",
+                "company": "Quinex",
+                "employed": true
+            }
+
+
+        ]
+    });
+
+
+
+
+</script>
+
+</html>
