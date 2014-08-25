@@ -2,7 +2,7 @@
 {
     'use strict';
 
-    angular.module( 'ui.bootstrap.grid' , [] )
+    angular.module( 'ui.bootstrap.grid' , ['ngSanitize'] )
 
         .constant( 'gridConfig' , {
 
@@ -68,9 +68,9 @@
                         .then( function ()
                         {
 
-                            self.grid.preCompileCellTemplates();
-
-                            self.refreshCanvas( true );
+//                            self.grid.preCompileCellTemplates();
+//
+//                            self.refreshCanvas( true );
                         } );
                 }
             }

@@ -167,6 +167,11 @@
                     } );
                 };
 
+                Grid.prototype.columnRender = function (html)
+                {
+                    return gridUtil.trustAsHtml(html);
+                }
+
                 return Grid;
 
             }] );

@@ -12,6 +12,13 @@
 
         .controller('GridRowController',['$scope', '$element', '$attrs', '$log', function ($scope, $elm, $attrs, $log) {
             console.log( 'gridRow controller' );
+
+            $scope.selectRow = function(row)
+            {
+                $scope.$on('getSelectRow'+$scope.grid.id,function(){
+                    return row;
+                })
+            }
         }])
 
         .directive('gridRow', function () {
@@ -27,6 +34,7 @@
                 link: function (scope, element, attrs,gridCtrl) {
 
                     console.log( 'gridRow link' );
+                    scope.grid = gridCtrl.grid;
 
                     scope.columns = gridCtrl.grid.columns;
 
@@ -34,7 +42,7 @@
 
                 }
             };
-        });
+        })
 
 
 

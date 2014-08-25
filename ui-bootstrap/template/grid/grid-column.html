@@ -1,10 +1,10 @@
 <table>
 <thead>
 <tr class="sequence">
-    <th ng-repeat="col in columns">
+    <th ng-repeat="col in columns" ng-show="col.visible">
         {{col.displayName}}
     </th>
 </tr>
 </thead>
-<grid-row></grid-row>
+    <div grid-row></div>
 </table>

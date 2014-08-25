@@ -1,37 +1,40 @@
 /**
  * Created by gc on 2014/8/19.
  */
-(function () {
+(function ()
+{
     'use strict';
 
-    angular.module('ui.bootstrap.grid')
+    angular.module( 'ui.bootstrap.grid' )
 
-        .constant('gridColumnConfig', {
+        .constant( 'gridColumnConfig' , {
 
-        })
+        } )
 
-        .controller('GridColumnController',['$scope', '$element', '$attrs', '$log', function ($scope, $elm, $attrs, $log) {
-            console.log('column controller');
+        .controller( 'GridColumnController' , ['$scope', '$element', '$attrs', '$log', function ( $scope , $elm , $attrs , $log )
+        {
+            console.log( 'column controller' );
             $scope.columns = new Array();
-        }])
+        }] )
 
-        .directive('gridColumn', function () {
+        .directive( 'gridColumn' , function ()
+        {
             return {
-                restrict:'EA',
-                controller:'GridColumnController',
-                templateUrl:'../../template/grid/grid-column.html',
-                transclude:true,
+                restrict : 'EA' ,
+                controller : 'GridColumnController' ,
+                templateUrl : '../../template/grid/grid-column.html' ,
+                transclude : true ,
 //                replace:true,
-                require: '^?grid',
-                scope: {
-                },
-                link: function (scope, element, attrs,gridCtrl) {
-                    console.log('column link');
+                require : '^?grid' ,
+                scope : {
+                } ,
+                link : function ( scope , element , attrs , gridCtrl )
+                {
+                    console.log( 'column link' );
                     scope.columns = gridCtrl.grid.columns;
                 }
             };
-        });
-
+        } )
 
 
 })();

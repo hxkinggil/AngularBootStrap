@@ -123,12 +123,11 @@ angular.module('ui.bootstrap.grid')
     self.cellClass = colDef.cellClass;
     self.cellFilter = colDef.cellFilter ? colDef.cellFilter : "";
 
+    //是否显示列
     self.visible = gridUtil.isNullOrUndefined(colDef.visible) || colDef.visible;
 
     self.headerClass = colDef.headerClass;
     //self.cursor = self.sortable ? 'pointer' : 'default';
-
-    self.visible = true;
 
     // Turn on sorting by default
     self.enableSorting = typeof(colDef.enableSorting) !== 'undefined' ? colDef.enableSorting : true;
@@ -221,6 +220,15 @@ angular.module('ui.bootstrap.grid')
     GridColumn.prototype.hideColumn = function() {
         this.colDef.visible = false;
     };
+    /**
+     * 列render
+     *
+     * @returns {*}
+     */
+    GridColumn.prototype.columnRender = function ()
+    {
+        return gridUtil.trustAsHtml(this.colDef.render);
+    }
 
     return GridColumn;
 }]);

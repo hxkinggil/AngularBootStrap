@@ -2,7 +2,7 @@
 {
     var uid = ['0', '0', '0'];
     var uidPrefix = 'uiGrid-';
-    angular.module( 'ui.bootstrap.grid' ).service( 'gridUtil' , ['$log', '$window', '$document', '$http', '$templateCache', '$timeout', '$injector', '$q', function ( $log , $window , $document , $http , $templateCache , $timeout , $injector , $q )
+    angular.module( 'ui.bootstrap.grid' ).service( 'gridUtil' , ['$log', '$window', '$document', '$http', '$templateCache', '$timeout', '$injector', '$q', '$sce', function ( $log , $window , $document , $http , $templateCache , $timeout , $injector , $q , $sce )
     {
         console.log( 'gridUtil service' );
 
@@ -98,34 +98,52 @@
                         }
                         return "object";
                 }
-            },
-            nextUid: function nextUid() {
+            } ,
+            nextUid : function nextUid()
+            {
                 var index = uid.length;
                 var digit;
 
-                while (index) {
+                while ( index )
+                {
                     index--;
-                    digit = uid[index].charCodeAt(0);
-                    if (digit === 57 /*'9'*/) {
+                    digit = uid[index].charCodeAt( 0 );
+                    if ( digit === 57 /*'9'*/ )
+                    {
                         uid[index] = 'A';
-                        return uid.join('');
+                        return uid.join( '' );
                     }
-                    if (digit === 90  /*'Z'*/) {
+                    if ( digit === 90  /*'Z'*/ )
+                    {
                         uid[index] = '0';
-                    } else {
-                        uid[index] = String.fromCharCode(digit + 1);
-                        return uid.join('');
+                    }
+                    else
+                    {
+                        uid[index] = String.fromCharCode( digit + 1 );
+                        return uid.join( '' );
                     }
                 }
-                uid.unshift('0');
+                uid.unshift( '0' );
 
-                return uidPrefix + uid.join('');
+                return uidPrefix + uid.join( '' );
+            } ,
+            /**
+             * 转义html
+             * @param html
+             * @returns {*}
+             */
+            trustAsHtml:function trustAsHtml(html)
+            {
+                return $sce.trustAsHtml(html);
             }
 
-        }
+    }
 
 
-        return s;
-    }] );
+    return s;
+}
+] )
+;
 
-})();
+})
+();
