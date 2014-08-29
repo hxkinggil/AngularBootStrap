@@ -65,7 +65,10 @@
     },
 
     // TODO(c0bra): Create full list of these somehow. NOTE: do any allow a space before or after them?
-    CURRENCY_SYMBOLS: ['ƒ', '$', '£', '$', '¤', '¥', '៛', '₩', '₱', '฿', '₫']
+    CURRENCY_SYMBOLS: ['ƒ', '$', '£', '$', '¤', '¥', '៛', '₩', '₱', '฿', '₫'],
+
+    //表格选中行颜色
+    ROW_SELECT_COLOR : '#f5f5f5'
   });
 
 })();

@@ -126,6 +126,8 @@ angular.module('ui.bootstrap.grid')
     //是否显示列
     self.visible = gridUtil.isNullOrUndefined(colDef.visible) || colDef.visible;
 
+    self.renderClick = colDef.renderClick;
+
     self.headerClass = colDef.headerClass;
     //self.cursor = self.sortable ? 'pointer' : 'default';
 

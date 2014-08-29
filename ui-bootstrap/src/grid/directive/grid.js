@@ -2,13 +2,13 @@
 {
     'use strict';
 
-    angular.module( 'ui.bootstrap.grid' , ['ngSanitize'] )
+    angular.module( 'ui.bootstrap.grid' , ['ngSanitize','ui.bootstrap.paging'] )
 
         .constant( 'gridConfig' , {
 
         } )
         //控制器
-        .controller( 'GridController' , ['$scope', '$element', '$attrs', '$q', '$log', 'gridClassFactory', function ( $scope , $elm , $attrs , $q , $log , gridClassFactory )
+        .controller( 'GridController' , ['$scope', '$element', '$attrs', '$q', '$log', 'gridClassFactory','gridConstants', function ( $scope , $elm , $attrs , $q , $log , gridClassFactory ,gridConstants)
         {
 
             console.log( 'grid controller' );
@@ -19,6 +19,20 @@
             self.grid = gridClassFactory.createGrid( $scope.gridOptions );
 
             $scope.grid = self.grid;
+
+
+            //表格选中行
+            self.grid.selectedRowEntity = {};
+
+            gridConstants.grid = $scope.grid;
+
+
+            $scope.$watch('grid.selectedRowEntity',function(){
+//                alert('==========watch:grid.selectedRowEntity=======:'+self.grid.selectedRowEntity.lastName)
+
+                $scope.gridOptions.selectedRowEntity = $scope.grid.selectedRowEntity;
+
+            })
 
             //构造列对象
             if ( $attrs.gridColumns )
@@ -120,6 +134,12 @@
                 columnDefWatchCollectionDereg();
             } );
 
+
+            $scope.columnRenderClick = function(rowEntity)
+            {
+                alert(rowEntity.firstName);
+            }
+
         }] )
         //指令
         .directive( 'grid' , function ()
@@ -137,6 +157,7 @@
                 {
 
                     console.log( 'grid link' );
+
                 }
             };
         } );

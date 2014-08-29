@@ -56,6 +56,8 @@ angular.module('ui.bootstrap.grid')
     // Filtering off by default
     this.enableFiltering = false;
 
+    this.selectedRowEntity = {};
+
   }
 
   return GridOptions;

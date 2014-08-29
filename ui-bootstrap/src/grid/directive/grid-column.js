@@ -24,14 +24,14 @@
                 controller : 'GridColumnController' ,
                 templateUrl : '../../template/grid/grid-column.html' ,
                 transclude : true ,
+                scope:false,
 //                replace:true,
                 require : '^?grid' ,
-                scope : {
-                } ,
                 link : function ( scope , element , attrs , gridCtrl )
                 {
                     console.log( 'column link' );
                     scope.columns = gridCtrl.grid.columns;
+
                 }
             };
         } )
