@@ -27,12 +27,14 @@
             gridConstants.grid = $scope.grid;
 
 
+            //监听选中行数据模型
             $scope.$watch('grid.selectedRowEntity',function(){
 //                alert('==========watch:grid.selectedRowEntity=======:'+self.grid.selectedRowEntity.lastName)
 
                 $scope.gridOptions.selectedRowEntity = $scope.grid.selectedRowEntity;
 
             })
+
 
             //构造列对象
             if ( $attrs.gridColumns )
@@ -82,9 +84,6 @@
                         .then( function ()
                         {
 
-//                            self.grid.preCompileCellTemplates();
-//
-//                            self.refreshCanvas( true );
                         } );
                 }
             }
@@ -113,17 +112,6 @@
                     $q.all( promises ).then( function ()
                     {
                         self.grid.addRows( n );
-
-
-//                        self.grid.modifyRows( n )
-//                            .then( function ()
-//                            {
-//
-//                                $scope.$evalAsync( function ()
-//                                {
-//                                    self.refreshCanvas( true );
-//                                } );
-//                            } );
                     } );
                 }
             }
@@ -150,9 +138,10 @@
                 templateUrl : '../../template/grid/grid.html' ,
 //            transclude:true,
                 replace : true ,
-                scope : {
-                    gridOptions : '=gridOptions'
-                } ,
+//                scope : {
+//                    gridOptions : '=gridOptions'
+//                } ,
+                scope:false,
                 link : function ( scope , element , attrs , GridCtrl )
                 {
 

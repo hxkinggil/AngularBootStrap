@@ -1,80 +1,71 @@
 /**
  * Created by gc on 2014/8/19.
  */
-(function () {
+(function ()
+{
     'use strict';
-    angular.module('ui.bootstrap.grid')
+    angular.module( 'ui.bootstrap.grid' )
 
-        .constant('gridRowConfig', {
+        .constant( 'gridRowConfig' , {
 
-        })
+        } )
 
-        .controller('GridRowController',['$scope', '$element', '$attrs', '$log','gridConstants','$compile', function ($scope, $elm, $attrs, $log,gridConstants,$compile) {
+        .controller( 'GridRowController' , ['$scope', '$element', '$attrs', '$log', 'gridConstants', '$compile', function ( $scope , $elm , $attrs , $log , gridConstants , $compile )
+        {
             console.log( 'gridRow controller' );
-            /**
-             * 选择行
-             * @param selectedRow
-             */
-            $scope.selectRow = function(selectedRow)
-            {
 
-                $scope.rows.forEach(function(row,index){
+            //选中的数据
+            $scope.selectedRows = new Array();
+            $scope.selectedRowEntity = new Array();
 
-                    if(selectedRow.uid != row.uid){
-                        row.style = {};
-                    }else{
-                        row.style = {'background-color':gridConstants.ROW_SELECT_COLOR};
-                        $scope.grid.selectedRowEntity = row.entity;
-                    }
 
-               })
 
-            }
+        }] )
 
-//            $scope.query = function(){
-//
-//                alert('aa');
-//            }
-
-        }])
-
-        .directive('gridRow', function (gridConstants) {
+        .directive( 'gridRow' , function ( gridConstants )
+        {
             return {
-                restrict:'EA',
-                controller:'GridRowController',
-                templateUrl:'../../template/grid/grid-row.html',
-                transclude:true,
-                replace:true,
-                scope:false,
-                require: '^?grid',
-                compile: function (elm,attr) {
+                restrict : 'EA' ,
+                controller : 'GridRowController' ,
+                templateUrl : '../../template/grid/grid-row.html' ,
+                transclude : true ,
+                replace : true ,
+                scope : true ,
+                require : '^?grid' ,
+                compile : function ( elm , attr )
+                {
 
+                    //重新编译模板内容
                     var a =
-                        '<tr ng-repeat=" row in rows " ng-click="selectRow(row)" ng-click="selectRow(row)" ng-style="row.style">'+
+                        '<tr ng-repeat=" row in rows " ng-click="selectRow(row);" ng-style="row.style">' +
+                        '<td ng-if="!single"><input type="checkbox" name="rowCheck" ng-model="row.selected"/></td>' +
                         '<td ng-repeat=" col in columns " ng-show="col.visible" >';
-//                                            '<div ng-show="col.colDef.render"  ng-bind-html="col.columnRender()" ng-click="col.colDef.renderClick(row.entity)"></div>'+
-//                                            '<div ng-show="!col.colDef.render"  ng-bind="$eval( row.getQualifiedColField( col ))"></div>'+
-                    var b =         '</td>'+
+
+                    var c = '</td>' +
                         '</tr>';
 
-                    var c = '';
-                    gridConstants.grid.columns.forEach(function(col,index){
+                    var b = '';
+                    gridConstants.grid.columns.forEach( function ( col , index )
+                    {
 
-                        if(col.colDef.render)
+                        if ( col.colDef.render )
                         {
-                            c += '<div ng-if="$index == '+index+' ">'+col.columnRender()+'</div>';
-                        }else{
+                            b += '<div ng-if="$index == ' + index + ' ">' + col.columnRender() + '</div>';
+                        }
+                        else
+                        {
 
-                            c += '<div ng-if="$index == '+index+' " ng-bind="$eval( row.getQualifiedColField( col ))"></div>';
+                            b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col ))"></div>';
                         }
 
 
-                    })
+                    } )
 
-                    $(elm ).html(a + c + b );
+                    $( elm ).html( a + b + c );
 
                     return {
-                        post: function (scope, element, attrs,gridCtrl) {
+                        post : function ( scope , element , attrs , gridCtrl )
+                        {
 
                             console.log( 'gridRow link' );
 
@@ -84,13 +75,146 @@
 
                             scope.rows = gridCtrl.grid.rows;
 
+                            scope.single = gridCtrl.grid.options.single;
+
+//                            scope.selectAll = gridCtrl.grid.options.selectAll;
+
+                            /**
+                             * 选择行
+                             * @param selectedRow
+                             */
+                            scope.selectRow = function ( selectedRow )
+                            {
+//                                alert( 'selectRow():' + selectedRow.selected );
+                                scope.rows.forEach( function ( row , index )
+                                {
+
+                                    //单选
+                                    if ( scope.single )
+                                    {
+
+                                        if ( selectedRow.uid != row.uid )
+                                        {
+                                            row.style = {};
+                                        }
+                                        else
+                                        {
+                                            row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
+                                            scope.selectedRows.length = 0;
+                                            scope.selectedRows.push(row.entity);
+                                            scope.grid.selectedRowEntity = scope.selectedRows[0];
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //复选
+
+                                        if ( selectedRow.uid != row.uid )
+                                        {
+                                            if(selectedRow.selected)
+                                            {
+                                                var flag = true;
+                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                {
+                                                    if(selectedRow.uid == scope.selectedRows[i].uid){
+                                                        flag = false;
+                                                    }
+                                                }
+                                                if(flag){
+                                                    scope.selectedRows.push(selectedRow);
+
+                                                    scope.sortSelectedRows(scope.selectedRows);
+                                                }
+
+                                            }else
+                                            {
+                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                {
+                                                    if(selectedRow.uid == scope.selectedRows[i].uid){
+                                                        scope.selectedRows.splice(i,1);
+                                                    }
+                                                }
+
+                                                scope.sortSelectedRows(scope.selectedRows);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
+                                            row.selected = !row.selected;
+
+                                            if( row.selected )
+                                            {
+                                                var flag = true;
+                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                {
+                                                    if(row.uid == scope.selectedRows[i].uid){
+                                                        flag = false;
+                                                    }
+                                                }
+                                                if(flag){
+                                                    scope.selectedRows.push(row);
+
+                                                    scope.sortSelectedRows(scope.selectedRows);
+                                                }
+                                            }else
+                                            {
+                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                {
+                                                    if(row.uid == scope.selectedRows[i].uid){
+                                                        scope.selectedRows.splice(i,1);
+                                                    }
+                                                }
+
+                                                scope.sortSelectedRows(scope.selectedRows);
+                                            }
+
+                                            scope.selectedRowEntity.length = 0;
+                                            for(var i = 0;i < scope.selectedRows.length;i++)
+                                            {
+                                                scope.selectedRowEntity.push(scope.selectedRows[i].entity);
+                                            }
+
+                                            scope.grid.selectedRowEntity =  scope.selectedRowEntity;
+                                        }
+                                        if (!row.selected)
+                                        {
+                                            row.style = {};
+                                        }
+
+                                    }
+
+                                } )
+
+//                                alert(JSON.stringify(scope.grid.selectedRowEntity));
+
+                            }
+
+                            //选中数据排序
+                            scope.sortSelectedRows = function(selectedRows)
+                            {
+                                selectedRows.sort(function(v1,v2){
+                                    if(v1.index < v2.index){
+                                        return -1;
+                                    }else if(v1.index > v2.index){
+                                        return 1;
+                                    }else{
+                                        return 0;
+                                    }
+
+                                })
+
+
+                            }
+
 
                         }
                     };
                 }
             };
-        })
-
+        } )
 
 
 })();

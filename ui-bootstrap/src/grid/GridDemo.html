@@ -11,6 +11,7 @@
     <script src="directive/grid.js"></script>
     <script src="services/gridClassFactory.js"></script>
     <script src="services/gridUtil.js"></script>
+    <script src="services/Array.js"></script>
     <script src="constants.js"></script>
     <script src="directive/grid-header.js"></script>
     <script src="directive/grid-column.js"></script>
@@ -22,11 +23,36 @@
     <script src="../paging/directive/paging.js"></script>
     <script src="../paging/directive/webpage.js"></script>
     <style>
-        .pagelist {line-height: 36px;margin-right: 30px;}
-        .num-info {color: #666;text-align: center;cursor: pointer;margin: auto 15px; display:inline-block;}
-        .page_num{ margin:20px 10px; margin-left:40px;}
-        .num-sel,.num-sel li{ width:40px; min-width:40px; left:48px; top:0px;}
-        .num-sel li a{ padding:0; text-align:center;color: #666;}
+        .pagelist {
+            line-height: 36px;
+            margin-right: 30px;
+        }
+
+        .num-info {
+            color: #666;
+            text-align: center;
+            cursor: pointer;
+            margin: auto 15px;
+            display: inline-block;
+        }
+
+        .page_num {
+            margin: 20px 10px;
+            margin-left: 40px;
+        }
+
+        .num-sel, .num-sel li {
+            width: 40px;
+            min-width: 40px;
+            left: 48px;
+            top: 0px;
+        }
+
+        .num-sel li a {
+            padding: 0;
+            text-align: center;
+            color: #666;
+        }
 
     </style>
 
@@ -35,8 +61,8 @@
 <body ng-app="test" ng-controller="Main">
 <div style="width: 800px;height: 100px;margin-left: 400px;margin-top: 100px;">
 
-    <button type="button" class="btn btn-primary"  ng-click="gridOptions.getSelectedRow()">返回选中行</button>
-    <button type="button" class="btn btn-primary" style="float: right;"  ng-click="query();">查询</button>
+    <button type="button" class="btn btn-primary" ng-click="gridOptions.getSelectedRow()">返回选中行</button>
+    <button type="button" class="btn btn-primary" style="float: right;" ng-click="query();">查询</button>
     <!-- 表格组件 -->
     <grid grid-options="gridOptions"></grid>
 
@@ -45,7 +71,7 @@
 <script>
     var app = angular.module( 'test' , ['ui.bootstrap.grid'] );
 
-    app.controller( 'Main' ,['$scope','$http','$q', function ( $scope , $http ,$q)
+    app.controller( 'Main' , ['$scope', '$http', '$q', function ( $scope , $http , $q )
     {
         // $scope.gridOptions = { data: 'data' };
         //构建一个表格配置选项
@@ -54,68 +80,69 @@
         $scope.gridOptions.id = 'qGrid';
         //表格标题
         $scope.gridOptions.title = "人员信息表";
+        //定义表格单选或复选
+        $scope.gridOptions.single = false;
         //构建列
         $scope.gridOptions.columnDefs = [
             {name : "编号" , field : "id"},
-            {name : "姓" ,   field : "lastName"},
+            {name : "姓" , field : "lastName"},
             {name : "名字" , field : "firstName"},
             {name : "年龄" , field : "age"},
             {name : "公司" , field : "company"},
-            {name : "操作" , field : "id",visible:true,renderClick: function(row){
-
-                alert('编辑操作：'+JSON.stringify(row));
-
-            },render:'<a title="编辑" href="#" ng-click="query();" style="display: inline-block;margin:0 8px"><span class="glyphicon glyphicon-edit"></span></a>' }
+            {name : "操作" , field : "id" , visible : true , render : '<a title="编辑" href="#" ng-click="edit(row.entity);" style="display: inline-block;margin:0 8px"><span class="glyphicon glyphicon-edit"></span></a>' }
         ];
         //选择行回调函数 返回行数据
-        $scope.gridOptions.getSelectedRow = function()
+        $scope.gridOptions.getSelectedRow = function ()
         {
-            if($scope.gridOptions.selectedRowEntity.lastName){
-//                alert('----- 选中了： -----'+$scope.gridOptions.selectedRowEntity.lastName)
-                alert( JSON.stringify( $scope.gridOptions.selectedRowEntity ) );
-            }else
+            if ( $scope.gridOptions.selectedRowEntity )
             {
-                alert('至少选择一行');
+                //
+                alert( JSON.stringify( $scope.gridOptions.selectedRowEntity ) );
+            }
+            else
+            {
+                alert( '至少选择一行' );
             }
             return $scope.gridOptions.selectedRowEntity;
         }
 
         var data =
-            {
-                total:5,
-                data:[
-                    {
-                        "id" : 0 ,
-                        "age" : 31 ,
-                        "firstName" : "Smith" ,
-                        "lastName" : "Pena" ,
-                        "company" : "Xplor" ,
-                        "employed" : false
-                    },
-                    {
-                        "id" : 1 ,
-                        "age" : 21 ,
-                        "firstName" : "Sadie" ,
-                        "lastName" : "Lowery" ,
-                        "company" : "Quinex" ,
-                        "employed" : true
-                    },
-                    {
-                        "id" : 2 ,
-                        "age" : 18 ,
-                        "firstName" : "Smith" ,
-                        "lastName" : "Alex" ,
-                        "company" : "Shan" ,
-                        "employed" : true
-                    },
-                    {
-                        "id" : 3 ,
-                        "age" : 42 ,
-                        "firstName" : "There" ,
-                        "lastName" : "Tom" ,
-                        "company" : "Google" ,
-                        "employed" : true
-                    }]
+        {
+            total : 5 ,
+            data : [
+                {
+                    "id" : 0 ,
+                    "age" : 31 ,
+                    "firstName" : "Smith" ,
+                    "lastName" : "Pena" ,
+                    "company" : "Xplor" ,
+                    "employed" : false
+                },
+                {
+                    "id" : 1 ,
+                    "age" : 21 ,
+                    "firstName" : "Sadie" ,
+                    "lastName" : "Lowery" ,
+                    "company" : "Quinex" ,
+                    "employed" : true
+                },
+                {
+                    "id" : 2 ,
+                    "age" : 18 ,
+                    "firstName" : "Smith" ,
+                    "lastName" : "Alex" ,
+                    "company" : "Shan" ,
+                    "employed" : true
+                },
+                {
+                    "id" : 3 ,
+                    "age" : 42 ,
+                    "firstName" : "There" ,
+                    "lastName" : "Tom" ,
+                    "company" : "Google" ,
+                    "employed" : true
+                }
+            ]
         };
 
         //构建分页组件
@@ -123,22 +150,31 @@
         //加载表格数据
         $scope.gridOptions.data = data.data;
         //初始化分页组件
-        $scope.gridOptions.webpage.initWebPage({
-            total :  data.total,
-            query:function(){
+        $scope.gridOptions.webpage.initWebPage( {
+            total : data.total ,
+            query : function ()
+            {
                 $scope.query();
             }
-        });
+        } );
         //查询方法
-        $scope.query = function(params)
+        $scope.query = function ( params )
         {
-            if(!params){
+            if ( !params )
+            {
                 params = {};
             }
 
             params.start = $scope.gridOptions.webpage.start;
             params.limit = $scope.gridOptions.webpage.limit;
-            alert('执行查询方法');
+            alert( '执行查询方法' );
+        }
+
+        $scope.edit = function ( row )
+        {
+
+            alert( row.lastName );
+
         }
 
     } ] );
