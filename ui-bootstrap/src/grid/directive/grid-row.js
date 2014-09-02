@@ -19,7 +19,6 @@
             $scope.selectedRowEntity = new Array();
 
 
-
         }] )
 
         .directive( 'gridRow' , function ( gridConstants )
@@ -41,10 +40,12 @@
                         '<td ng-if="!single"><input type="checkbox" name="rowCheck" ng-model="row.selected"/></td>' +
                         '<td ng-repeat=" col in columns " ng-show="col.visible" >';
 
+                    var b = '';
+
                     var c = '</td>' +
                         '</tr>';
 
-                    var b = '';
+
                     gridConstants.grid.columns.forEach( function ( col , index )
                     {
 
@@ -85,7 +86,10 @@
                              */
                             scope.selectRow = function ( selectedRow )
                             {
-//                                alert( 'selectRow():' + selectedRow.selected );
+
+
+                                console.log( ' grid-row.js : 选择行方法 ' );
+
                                 scope.rows.forEach( function ( row , index )
                                 {
 
@@ -99,44 +103,48 @@
                                         }
                                         else
                                         {
+                                            //选中后改变行样式,并返回该行数据
                                             row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
-                                            scope.selectedRows.length = 0;
-                                            scope.selectedRows.push(row.entity);
-                                            scope.grid.selectedRowEntity = scope.selectedRows[0];
+                                            scope.grid.selectedRowEntity = selectedRow.entity;
+//                                            scope.selectedRows.length = 0;
+//                                            scope.selectedRows.push( row.entity );
                                         }
 
                                     }
                                     else
                                     {
                                         //复选
-
                                         if ( selectedRow.uid != row.uid )
                                         {
-                                            if(selectedRow.selected)
+                                            if ( row.selected )
                                             {
                                                 var flag = true;
-                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                for ( var i = 0; i < scope.selectedRows.length; i++ )
                                                 {
-                                                    if(selectedRow.uid == scope.selectedRows[i].uid){
+                                                    if ( row.uid == scope.selectedRows[i].uid )
+                                                    {
                                                         flag = false;
                                                     }
                                                 }
-                                                if(flag){
-                                                    scope.selectedRows.push(selectedRow);
+                                                if ( flag )
+                                                {
+                                                    scope.selectedRows.push( row );
 
-                                                    scope.sortSelectedRows(scope.selectedRows);
+                                                    scope.sortSelectedRows( scope.selectedRows );
                                                 }
 
-                                            }else
+                                            }
+                                            else
                                             {
-                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                for ( var i = 0; i < scope.selectedRows.length; i++ )
                                                 {
-                                                    if(selectedRow.uid == scope.selectedRows[i].uid){
-                                                        scope.selectedRows.splice(i,1);
+                                                    if ( row.uid == scope.selectedRows[i].uid )
+                                                    {
+                                                        scope.selectedRows.splice( i , 1 );
                                                     }
                                                 }
 
-                                                scope.sortSelectedRows(scope.selectedRows);
+                                                scope.sortSelectedRows( scope.selectedRows );
 
                                             }
                                         }
@@ -144,42 +152,41 @@
                                         {
                                             row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
                                             row.selected = !row.selected;
-
-                                            if( row.selected )
+                                            if ( row.selected )
                                             {
                                                 var flag = true;
-                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                if( scope.selectedRows.length > 0 )
                                                 {
-                                                    if(row.uid == scope.selectedRows[i].uid){
-                                                        flag = false;
+                                                    for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                                    {
+                                                        if ( row.uid == scope.selectedRows[i].uid )
+                                                        {
+                                                            flag = false;
+                                                        }
                                                     }
                                                 }
-                                                if(flag){
-                                                    scope.selectedRows.push(row);
-
-                                                    scope.sortSelectedRows(scope.selectedRows);
-                                                }
-                                            }else
-                                            {
-                                                for(var i = 0;i < scope.selectedRows.length;i++)
+                                                if ( flag )
                                                 {
-                                                    if(row.uid == scope.selectedRows[i].uid){
-                                                        scope.selectedRows.splice(i,1);
+                                                    scope.selectedRows.push( row );
+
+                                                    scope.sortSelectedRows( scope.selectedRows );
+                                                }
+                                            }
+                                            else
+                                            {
+                                                for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                                {
+                                                    if ( row.uid == scope.selectedRows[i].uid )
+                                                    {
+                                                        scope.selectedRows.splice( i , 1 );
                                                     }
                                                 }
 
-                                                scope.sortSelectedRows(scope.selectedRows);
+                                                scope.sortSelectedRows( scope.selectedRows );
                                             }
-
-                                            scope.selectedRowEntity.length = 0;
-                                            for(var i = 0;i < scope.selectedRows.length;i++)
-                                            {
-                                                scope.selectedRowEntity.push(scope.selectedRows[i].entity);
-                                            }
-
-                                            scope.grid.selectedRowEntity =  scope.selectedRowEntity;
                                         }
-                                        if (!row.selected)
+
+                                        if ( !row.selected )
                                         {
                                             row.style = {};
                                         }
@@ -188,23 +195,42 @@
 
                                 } )
 
+                                if ( !scope.single )
+                                {
+                                    scope.selectedRowEntity.length = 0;
+                                    for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                    {
+                                        scope.selectedRowEntity.push( scope.selectedRows[i].entity );
+                                    }
+                                    scope.grid.selectedRowEntity = scope.selectedRowEntity;
+                                }
+
 //                                alert(JSON.stringify(scope.grid.selectedRowEntity));
 
                             }
 
                             //选中数据排序
-                            scope.sortSelectedRows = function(selectedRows)
+                            scope.sortSelectedRows = function ( selectedRows )
                             {
-                                selectedRows.sort(function(v1,v2){
-                                    if(v1.index < v2.index){
-                                        return -1;
-                                    }else if(v1.index > v2.index){
-                                        return 1;
-                                    }else{
-                                        return 0;
-                                    }
+                                if ( selectedRows.length > 0 )
+                                {
+                                    selectedRows.sort( function ( v1 , v2 )
+                                    {
+                                        if ( v1.index < v2.index )
+                                        {
+                                            return -1;
+                                        }
+                                        else if ( v1.index > v2.index )
+                                        {
+                                            return 1;
+                                        }
+                                        else
+                                        {
+                                            return 0;
+                                        }
 
-                                })
+                                    } )
+                                }
 
 
                             }

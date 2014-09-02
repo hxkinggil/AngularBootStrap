@@ -58,6 +58,9 @@ angular.module('ui.bootstrap.grid')
 
     this.selectedRowEntity = {};
 
+    //默认是单选
+    this.single = true;
+
   }
 
   return GridOptions;

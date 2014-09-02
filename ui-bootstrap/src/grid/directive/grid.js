@@ -29,7 +29,7 @@
 
             //监听选中行数据模型
             $scope.$watch('grid.selectedRowEntity',function(){
-//                alert('==========watch:grid.selectedRowEntity=======:'+self.grid.selectedRowEntity.lastName)
+//                alert('==========watch:grid.selectedRowEntity=======:'+JSON.stringify($scope.grid.selectedRowEntity))
 
                 $scope.gridOptions.selectedRowEntity = $scope.grid.selectedRowEntity;
 

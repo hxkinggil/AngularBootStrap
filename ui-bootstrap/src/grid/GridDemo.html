@@ -61,8 +61,13 @@
 <body ng-app="test" ng-controller="Main">
 <div style="width: 800px;height: 100px;margin-left: 400px;margin-top: 100px;">
 
-    <button type="button" class="btn btn-primary" ng-click="gridOptions.getSelectedRow()">返回选中行</button>
-    <button type="button" class="btn btn-primary" style="float: right;" ng-click="query();">查询</button>
+    <button type="button" class="btn btn-primary" style="float: left;" ng-click="gridOptions.getSelectedRow()">返回选中行</button>
+    <div class="input-group input-group-sm">
+        <input id="queryTitle" style="width:20%;float:right" type="text" class="form-control " ng-change="query()" ng-model="queryTitle">
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-primary" style="float: right;" ng-click="query();">查询</button>
+        </div>
+    </div>
     <!-- 表格组件 -->
     <grid grid-options="gridOptions"></grid>
 
@@ -145,6 +150,15 @@
             ]
         };
 
+        var datas = new Array();
+
+        for(var i = 0;i < 10;i++)
+        {
+            datas.push({id:'Id'+i,age:i,firstName:'firstName'+i,lastName:'lastName'+i,company:'company'+i,employed:true});
+        }
+
+        data.data = datas;
+
         //构建分页组件
         $scope.gridOptions.webpage = getWebPage();
         //加载表格数据
@@ -173,7 +187,7 @@
         $scope.edit = function ( row )
         {
 
-            alert( row.lastName );
+            alert( '编辑方法：' + row.lastName );
 
         }
 

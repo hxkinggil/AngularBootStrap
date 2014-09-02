@@ -1,7 +1,11 @@
 <table>
 <thead>
+<!--<tr class="sequence" style="background-color: #f5f5f5">-->
 <tr class="sequence">
-    <th ng-repeat="col in columns" ng-show="col.visible">
+    <th ng-if="!single">
+        <input title="全选" type="checkbox" name="rowCheckAll" ng-model="selectAll.checked"/>
+    </th>
+    <th ng-repeat="col in columns" ng-if="col.visible">
         {{col.displayName}}
     </th>
 </tr>

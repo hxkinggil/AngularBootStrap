@@ -68,7 +68,10 @@
     CURRENCY_SYMBOLS: ['ƒ', '$', '£', '$', '¤', '¥', '៛', '₩', '₱', '฿', '₫'],
 
     //表格选中行颜色
-    ROW_SELECT_COLOR : '#f5f5f5'
+//    ROW_SELECT_COLOR : '#f5f5f5',
+    ROW_SELECT_COLOR : '#DFE8F6',
+    ROW_SELECT_COLOR_INFO : '#DFE8F6'
+
   });
 
 })();

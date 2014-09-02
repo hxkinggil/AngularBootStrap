@@ -2,6 +2,7 @@
 {
     var uid = ['0', '0', '0'];
     var uidPrefix = 'uiGrid-';
+
     angular.module( 'ui.bootstrap.grid' ).service( 'gridUtil' , ['$log', '$window', '$document', '$http', '$templateCache', '$timeout', '$injector', '$q', '$sce', function ( $log , $window , $document , $http , $templateCache , $timeout , $injector , $q , $sce )
     {
         console.log( 'gridUtil service' );
@@ -142,8 +143,10 @@
 
     return s;
 }
-] )
-;
+] );
+
+
+
 
 })
 ();

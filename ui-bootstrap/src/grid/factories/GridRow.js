@@ -55,6 +55,9 @@ angular.module('ui.bootstrap.grid')
       */
     // Default to true
     this.visible = true;
+
+    //是否选中,默认是false
+    this.selected = false;
   }
 
   /**
