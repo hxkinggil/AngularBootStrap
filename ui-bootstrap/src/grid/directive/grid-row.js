@@ -55,8 +55,13 @@
                         }
                         else
                         {
-
-                            b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col ))"></div>';
+                            if(  col.colDef.filter )
+                            {
+                                b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col )+\'|'+col.colDef.filter+'\') "></div>';
+                            }else
+                            {
+                                b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col )) "></div>';
+                            }
                         }
 
 

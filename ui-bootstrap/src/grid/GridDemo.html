@@ -61,9 +61,12 @@
 <body ng-app="test" ng-controller="Main">
 <div style="width: 800px;height: 100px;margin-left: 400px;margin-top: 100px;">
 
-    <button type="button" class="btn btn-primary" style="float: left;" ng-click="gridOptions.getSelectedRow()">返回选中行</button>
+    <button type="button" class="btn btn-primary" style="float: left;" ng-click="gridOptions.getSelectedRow()">返回选中行
+    </button>
     <div class="input-group input-group-sm">
-        <input id="queryTitle" style="width:20%;float:right" type="text" class="form-control " ng-change="query()" ng-model="queryTitle">
+        <input id="queryTitle" style="width:20%;float:right" type="text" class="form-control " placeholder="查询条件..."
+               ng-model="queryTitle">
+
         <div class="input-group-btn">
             <button type="button" class="btn btn-primary" style="float: right;" ng-click="query();">查询</button>
         </div>
@@ -89,12 +92,20 @@
         $scope.gridOptions.single = false;
         //构建列
         $scope.gridOptions.columnDefs = [
-            {name : "编号" , field : "id"},
-            {name : "姓" , field : "lastName"},
-            {name : "名字" , field : "firstName"},
+            //visible属性用于列是否可见,true时显示,false时隐藏,默认为true
+            {name : "编号" , field : "id" , visible : true},
+            {name : "姓" , field : "lastName" , filter : 'uppercase'},
+            {name : "名字" , field : "firstName" , filter : 'uppercase' , visible : false},
             {name : "年龄" , field : "age"},
-            {name : "公司" , field : "company"},
-            {name : "操作" , field : "id" , visible : true , render : '<a title="编辑" href="#" ng-click="edit(row.entity);" style="display: inline-block;margin:0 8px"><span class="glyphicon glyphicon-edit"></span></a>' }
+            //render可以自定义渲染列,支持html
+            {name : "公司" , field : "company" , render : '<select ng-disabled="!row.entity.company" ng-model="row.entity.company" class="form-control"><option value="">请选择</option><option value="microsoft">微软</option><option value="google">谷歌</option></select>'},
+            {name : "单价" , field : "currency" , filter : 'currency : \\\'￥\\\''},
+            {name : "数量" , field : "num" ,class:'col-sm-2', render : '<input type="number" ng-change="row.entity.totalNum = row.entity.num * row.entity.currency"  ng-model="row.entity.num"  class="form-control"/>'},
+            {name : "总价" , field : "totalNum" , filter : 'currency : \\\'￥\\\''},
+            //filter可添加过滤器,如果过滤器里包含单引号,需转义
+            {name : "日期" , field : "date" , filter : 'date: \\\'yyyy-MM-dd \\\' '},
+            //在render调用edit()方法,可在方法参数中传入row.entity是选择的该行数据,edit()方法定义在当前调用grid指令的scope
+            {name : "操作" , field : "id" , render : '<a title="计算总价" href="#" ng-click="edit(row.entity);" style="display: inline-block;margin:0 8px"><span class="glyphicon glyphicon-edit"></span></a>' }
         ];
         //选择行回调函数 返回行数据
         $scope.gridOptions.getSelectedRow = function ()
@@ -111,69 +122,22 @@
             return $scope.gridOptions.selectedRowEntity;
         }
 
-        var data =
-        {
-            total : 5 ,
-            data : [
-                {
-                    "id" : 0 ,
-                    "age" : 31 ,
-                    "firstName" : "Smith" ,
-                    "lastName" : "Pena" ,
-                    "company" : "Xplor" ,
-                    "employed" : false
-                },
-                {
-                    "id" : 1 ,
-                    "age" : 21 ,
-                    "firstName" : "Sadie" ,
-                    "lastName" : "Lowery" ,
-                    "company" : "Quinex" ,
-                    "employed" : true
-                },
-                {
-                    "id" : 2 ,
-                    "age" : 18 ,
-                    "firstName" : "Smith" ,
-                    "lastName" : "Alex" ,
-                    "company" : "Shan" ,
-                    "employed" : true
-                },
-                {
-                    "id" : 3 ,
-                    "age" : 42 ,
-                    "firstName" : "There" ,
-                    "lastName" : "Tom" ,
-                    "company" : "Google" ,
-                    "employed" : true
-                }
-            ]
-        };
-
-        var datas = new Array();
-
-        for(var i = 0;i < 10;i++)
-        {
-            datas.push({id:'Id'+i,age:i,firstName:'firstName'+i,lastName:'lastName'+i,company:'company'+i,employed:true});
-        }
-
-        data.data = datas;
 
         //构建分页组件
         $scope.gridOptions.webpage = getWebPage();
-        //加载表格数据
-        $scope.gridOptions.data = data.data;
-        //初始化分页组件
-        $scope.gridOptions.webpage.initWebPage( {
-            total : data.total ,
-            query : function ()
-            {
-                $scope.query();
-            }
+
+        //页面加载完成后执行
+        $scope.$watch( '$viewContentLoaded' , function ()
+        {
+            $scope.query();
         } );
+
         //查询方法
         $scope.query = function ( params )
         {
+            console.log( '执行查询方法' );
+
+
             if ( !params )
             {
                 params = {};
@@ -181,13 +145,37 @@
 
             params.start = $scope.gridOptions.webpage.start;
             params.limit = $scope.gridOptions.webpage.limit;
-            alert( '执行查询方法' );
+
+            //grid支持json格式的数据,后台将WebPage对象转成json即可
+            var datas = new Array();
+            for ( var i = 0; i < 10; i++ )
+            {
+                datas.push( {id : 'Id' + i , age : i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : 4000 + i , num : i ,totalNum:(4000 + i)*i, 'date' : new Date() , employed : true} );
+            }
+
+            var data =
+            {
+                total : 5 ,
+                data : datas
+            };
+
+            //加载表格数据
+            $scope.gridOptions.data = data.data;
+            //初始化分页组件
+            $scope.gridOptions.webpage.initWebPage( {
+                total : data.total ,
+                query : function ()
+                {
+                    $scope.query();
+                }
+            } );
+
         }
 
         $scope.edit = function ( row )
         {
 
-            alert( '编辑方法：' + row.lastName );
+            alert( '总价：' + row.num * row.currency );
 
         }
 

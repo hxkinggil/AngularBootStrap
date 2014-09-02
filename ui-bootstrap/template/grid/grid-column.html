@@ -5,7 +5,7 @@
     <th ng-if="!single">
         <input title="全选" type="checkbox" name="rowCheckAll" ng-model="selectAll.checked"/>
     </th>
-    <th ng-repeat="col in columns" ng-if="col.visible">
+    <th ng-repeat="col in columns" ng-if="col.visible" ng-class="col.colDef.class">
         {{col.displayName}}
     </th>
 </tr>
