@@ -18,7 +18,7 @@
                 createGrid : function ( options )
                 {
                     options = (typeof(options) !== 'undefined') ? options : {};
-                    options.id = options.id === undefined ||  options.id === null? this.newId() : options.id;
+                    options.id = options.id === undefined || options.id === null ? this.newId() : options.id;
                     var grid = new Grid( options );
 
 
