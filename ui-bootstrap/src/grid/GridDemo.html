@@ -146,13 +146,13 @@
             params.start = $scope.gridOptions.webpage.start;
             params.limit = $scope.gridOptions.webpage.limit;
 
-            //grid支持json格式的数据,后台将WebPage对象转成json即可
             var datas = new Array();
             for ( var i = 0; i < 10; i++ )
             {
                 datas.push( {id : 'Id' + i , age : i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : 4000 + i , num : i ,totalNum:(4000 + i)*i, 'date' : new Date() , employed : true} );
             }
 
+            //grid支持json格式的数据,后台将WebPage对象转成json即可
             var data =
             {
                 total : 5 ,
