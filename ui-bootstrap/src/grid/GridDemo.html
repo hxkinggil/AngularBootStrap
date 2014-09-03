@@ -89,6 +89,8 @@
         $scope.gridOptions.title = "人员信息表";
         //定义表格单选或复选
         $scope.gridOptions.single = false;
+        //table的样式
+        $scope.gridOptions.class = 'table table-hover table-bordered';
         //构建列
         $scope.gridOptions.columnDefs = [
             //visible属性用于列是否可见,true时显示,false时隐藏,默认为true
@@ -147,10 +149,10 @@
             params.limit = $scope.gridOptions.webpage.limit;
 
             var datas = new Array();
-            for ( var i = 0; i < 10; i++ )
+            for ( var i = 0 ; i < 10 ; i++ )
             {
-                var ranValue = Math.random()*100;
-                datas.push( {id : 'Id' + i , age : 20 + i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : ranValue  + i , num : i + 1 , totalNum : (ranValue + i) * ( i + 1 ) , 'date' : new Date() , employed : true} );
+                var ranValue = Math.random() * 100;
+                datas.push( {id : 'Id' + i , age : 20 + i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : ranValue + i , num : i + 1 , totalNum : (ranValue + i) * ( i + 1 ) , 'date' : new Date() , employed : true} );
             }
 
             //grid支持json格式的数据,后台将WebPage对象转成json即可
@@ -161,7 +163,8 @@
             };
 
             //加载表格数据
-            if($scope.gridOptions.data){
+            if ( $scope.gridOptions.data )
+            {
                 $scope.gridOptions.data = null;
             }
             $scope.gridOptions.data = data.data;
