@@ -90,7 +90,7 @@
 
             function dataWatchFunction( n )
             {
-                // $log.debug('dataWatch fired');
+                $log.debug(' --------dataWatch fired--------- ');
                 var promises = [];
 
                 if ( n )
@@ -121,12 +121,6 @@
                 dataWatchCollectionDereg();
                 columnDefWatchCollectionDereg();
             } );
-
-
-            $scope.columnRenderClick = function(rowEntity)
-            {
-                alert(rowEntity.firstName);
-            }
 
         }] )
         //指令

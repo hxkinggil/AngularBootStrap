@@ -11,7 +11,6 @@
     <script src="directive/grid.js"></script>
     <script src="services/gridClassFactory.js"></script>
     <script src="services/gridUtil.js"></script>
-    <script src="services/Array.js"></script>
     <script src="constants.js"></script>
     <script src="directive/grid-header.js"></script>
     <script src="directive/grid-column.js"></script>
@@ -101,7 +100,7 @@
             {name : "公司" , field : "company" , render : '<select ng-disabled="!row.entity.company" ng-model="row.entity.company" class="form-control"><option value="">请选择</option><option value="microsoft">微软</option><option value="google">谷歌</option></select>'},
             {name : "单价" , field : "currency" , filter : 'currency : \\\'￥\\\''},
             //class定义列样式
-            {name : "数量" , field : "num" ,class:'col-sm-2', render : '<input type="number" ng-change="row.entity.totalNum = row.entity.num * row.entity.currency"  ng-model="row.entity.num"  class="form-control"/>'},
+            {name : "数量" , field : "num" , class : 'col-sm-2' , render : '<input type="number" ng-change="row.entity.totalNum = row.entity.num * row.entity.currency"  ng-model="row.entity.num"  class="form-control"/>'},
             {name : "总价" , field : "totalNum" , filter : 'currency : \\\'￥\\\''},
             //filter可添加过滤器,如果过滤器里包含单引号,需转义
             {name : "日期" , field : "date" , filter : 'date: \\\'yyyy-MM-dd \\\' '},
@@ -150,7 +149,8 @@
             var datas = new Array();
             for ( var i = 0; i < 10; i++ )
             {
-                datas.push( {id : 'Id' + i , age : i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : 4000 + i , num : i ,totalNum:(4000 + i)*i, 'date' : new Date() , employed : true} );
+                var ranValue = Math.random()*100;
+                datas.push( {id : 'Id' + i , age : 20 + i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : ranValue  + i , num : i + 1 , totalNum : (ranValue + i) * ( i + 1 ) , 'date' : new Date() , employed : true} );
             }
 
             //grid支持json格式的数据,后台将WebPage对象转成json即可
@@ -161,6 +161,9 @@
             };
 
             //加载表格数据
+            if($scope.gridOptions.data){
+                $scope.gridOptions.data = null;
+            }
             $scope.gridOptions.data = data.data;
             //初始化分页组件
             $scope.gridOptions.webpage.initWebPage( {

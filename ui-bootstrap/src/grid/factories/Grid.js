@@ -128,6 +128,8 @@
                 {
                     var self = this;
                     var existingRowCount = self.rows.length;
+                    //添加前清空数据集
+                    self.rows.length = 0;
                     for ( var i = 0; i < newRawData.length; i++ )
                     {
 //                        var newRow = self.processRowBuilders(new GridRow(newRawData[i], i + existingRowCount, self));
