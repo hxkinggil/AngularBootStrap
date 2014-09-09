@@ -13,6 +13,7 @@
     <script src="services/gridClassFactory.js"></script>
     <script src="services/gridUtil.js"></script>
     <script src="constants.js"></script>
+    <script src="directive/tableSpan.js"></script>
     <script src="directive/grid-header.js"></script>
     <script src="directive/grid-column.js"></script>
     <script src="directive/grid-row.js"></script>
@@ -90,14 +91,16 @@
         $scope.gridOptions.title = "人员信息表";
         //定义表格单选或复选
         $scope.gridOptions.single = false;
+        //是否是合并表格
+//        $scope.gridOptions.rowSpanTable = true;
         //table的样式
         $scope.gridOptions.class = 'table table-hover table-bordered';
         //构建列
         $scope.gridOptions.columnDefs = [
             //visible属性用于列是否可见,true时显示,false时隐藏,默认为true
-            {name : "编号" , field : "id" , visible : true},
-            {name : "姓" , field : "lastName" , filter : 'uppercase'},
-            {name : "名字" , field : "firstName" , filter : 'uppercase' , visible : false},
+            {name : "编号" , field : "id" , visible : true,rowSpanGroup:'id'},
+            {name : "姓" , field : "lastName" , filter : 'uppercase',rowSpanGroup:'id'},
+            {name : "名字" , field : "firstName" , filter : 'uppercase' , visible : false,rowSpanGroup:'id'},
             {name : "年龄" , field : "age"},
             //render可以自定义渲染列,支持html
             {name : "公司" , field : "company" , render : '<select ng-disabled="!row.entity.company" ng-model="row.entity.company" class="form-control"><option value="">请选择</option><option value="microsoft">微软</option><option value="google">谷歌</option></select>'},
@@ -108,7 +111,7 @@
             //filter可添加过滤器,如果过滤器里包含单引号,需转义
             {name : "日期" , field : "date" , filter : 'date: \\\'yyyy-MM-dd \\\' '},
             //在render调用edit()方法,可在方法参数中传入row.entity是选择的该行数据模型,edit()方法定义在当前页面scope中
-            {name : "操作" , field : "id" , render : '<a title="计算总价" href="#" ng-click="edit(row.entity);" style="display: inline-block;margin:0 8px"><span class="glyphicon glyphicon-edit"></span></a>' }
+            {name : "操作" , field : "operation" , render : '<a title="计算总价" href="#" ng-click="edit(row.entity);" style="display: inline-block;margin:0 8px"><span class="glyphicon glyphicon-edit"></span></a>' }
         ];
         //选择行回调函数 返回行数据
         $scope.gridOptions.getSelectedRow = function ()
@@ -153,7 +156,7 @@
             for ( var i = 0 ; i < 10 ; i++ )
             {
                 var ranValue = Math.random() * 100;
-                datas.push( {id : 'Id' + i , age : 20 + i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : ranValue + i , num : i + 1 , totalNum : (ranValue + i) * ( i + 1 ) , 'date' : new Date() , employed : true} );
+                datas.push( {id : 'ID'+i , age : 20 + i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : ranValue + i , num : i + 1 , totalNum : (ranValue + i) * ( i + 1 ) , 'date' : new Date() , employed : true} );
             }
 
             //grid支持json格式的数据,后台将WebPage对象转成json即可

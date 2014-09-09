@@ -128,19 +128,26 @@
                 {
                     var self = this;
                     var existingRowCount = self.rows.length;
+
+                    if( this.options.rowSpanTable )
+                    {
+                        //构建headerMapping
+                        var headerMapping = this.buildHeaderMapping();
+
+                        var tableSpan = new window.tableSpan(newRawData,headerMapping);
+                    }
+
                     //添加前清空数据集
                     self.rows.length = 0;
                     for ( var i = 0; i < newRawData.length; i++ )
                     {
-//                        var newRow = self.processRowBuilders(new GridRow(newRawData[i], i + existingRowCount, self));
-//
-//                        if (self.options.enableRowHashing) {
-//                            var found = self.rowHashMap.get(newRow.entity);
-//                            if (found) {
-//                                found.row = newRow;
-//                            }
-//                        }
-                        var a = new GridRow( newRawData[i] , i + existingRowCount , self );
+                        //得到合并和删除行的信息
+                        var rowSpanAndDelInfo;
+                        if( this.options.rowSpanTable ){//此处改为可配项
+                            rowSpanAndDelInfo = tableSpan.getDelAndRow(i);
+                        }
+
+                        var a = new GridRow( newRawData[i] , i + existingRowCount , self ,rowSpanAndDelInfo);
                         self.rows.push( a );
                     }
                 };
@@ -172,6 +179,28 @@
                 Grid.prototype.columnRender = function (html)
                 {
                     return gridUtil.trustAsHtml(html);
+                }
+
+                Grid.prototype.buildHeaderMapping = function()
+                {
+                    var headerMappingStr = '{';
+                    this.options.columnDefs.forEach( function ( colDef , index )
+                    {
+                        if( colDef.rowSpanGroup )
+                        {
+                            headerMappingStr += colDef.field+':"'+colDef.rowSpanGroup+'",'
+                        }
+                    } );
+
+                    if(headerMappingStr.lastIndexOf(',') != -1)
+                    {
+                        headerMappingStr = headerMappingStr.substring(0,headerMappingStr.length-1);
+                    }
+
+                    headerMappingStr += '}';
+
+                    eval('var headerMapping = '+headerMappingStr)
+                    return headerMapping;
                 }
 
                 return Grid;

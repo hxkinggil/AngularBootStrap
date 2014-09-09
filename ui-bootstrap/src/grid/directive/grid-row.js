@@ -38,7 +38,7 @@
                     var a =
                         '<tr ng-repeat=" row in rows " ng-click="selectRow(row);" ng-style="row.style">' +
                         '<td ng-if="!single"><input type="checkbox" name="rowCheck" ng-click="stopEvt($event.target,$event)" ng-change="checkRow(row)" ng-model="row.selected"/></td>' +
-                        '<td ng-repeat=" col in columns " ng-show="col.visible" >';
+                        '<td ng-repeat=" col in columns " ng-show="col.visible" ng-if="!row.rowSpanAndDelInfo.delRow[col.colDef.field]" rowSpan="{{row.rowSpanAndDelInfo.spanRow[col.colDef.field] ? row.rowSpanAndDelInfo.spanRow[col.colDef.field] : \'1\' }}"">';
 
                     var b = '';
 

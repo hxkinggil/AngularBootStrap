@@ -12,7 +12,7 @@ angular.module('ui.bootstrap.grid')
    * @param {number} index the current position of the row in the array
    * @param {Grid} reference to the parent grid
    */
-   var GridRow = function GridRow(entity, index, grid) {
+   var GridRow = function GridRow(entity, index, grid,rowSpanAndDelInfo) {
 
      /**
       *  @ngdoc object
@@ -46,6 +46,8 @@ angular.module('ui.bootstrap.grid')
       *  @description  UniqueId of row
       */
      this.uid = gridUtil.nextUid();
+
+     this.rowSpanAndDelInfo = rowSpanAndDelInfo;
 
      /**
       *  @ngdoc object
