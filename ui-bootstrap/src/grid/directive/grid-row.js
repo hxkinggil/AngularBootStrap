@@ -37,13 +37,13 @@
                     //重新编译模板内容
                     var a =
                         '<tr ng-repeat=" row in rows " ng-click="selectRow(row);" ng-style="row.style">' +
-                        '<td ng-if="!single"><input type="checkbox" name="rowCheck" ng-model="row.selected"/></td>' +
+                        '<td ng-if="!single"><input type="checkbox" name="rowCheck" ng-click="stopEvt($event.target,$event)" ng-change="checkRow(row)" ng-model="row.selected"/></td>' +
                         '<td ng-repeat=" col in columns " ng-show="col.visible" >';
 
                     var b = '';
 
                     var c =
-                            '</td>' +
+                        '</td>' +
                         '</tr>';
 
 
@@ -56,10 +56,11 @@
                         }
                         else
                         {
-                            if(  col.colDef.filter )
+                            if ( col.colDef.filter )
                             {
-                                b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col )+\'|'+col.colDef.filter+'\') "></div>';
-                            }else
+                                b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col )+\'|' + col.colDef.filter + '\') "></div>';
+                            }
+                            else
                             {
                                 b += '<div ng-if="$index == ' + index + ' " ng-bind="$eval( row.getQualifiedColField( col )) "></div>';
                             }
@@ -125,7 +126,7 @@
                                             if ( row.selected )
                                             {
                                                 var flag = true;
-                                                for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                                for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
                                                 {
                                                     if ( row.uid == scope.selectedRows[i].uid )
                                                     {
@@ -142,7 +143,7 @@
                                             }
                                             else
                                             {
-                                                for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                                for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
                                                 {
                                                     if ( row.uid == scope.selectedRows[i].uid )
                                                     {
@@ -156,14 +157,14 @@
                                         }
                                         else
                                         {
-                                            row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
                                             row.selected = !row.selected;
                                             if ( row.selected )
                                             {
+                                                row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
                                                 var flag = true;
-                                                if( scope.selectedRows.length > 0 )
+                                                if ( scope.selectedRows.length > 0 )
                                                 {
-                                                    for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                                    for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
                                                     {
                                                         if ( row.uid == scope.selectedRows[i].uid )
                                                         {
@@ -180,7 +181,9 @@
                                             }
                                             else
                                             {
-                                                for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                                row.style = {};
+
+                                                for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
                                                 {
                                                     if ( row.uid == scope.selectedRows[i].uid )
                                                     {
@@ -192,11 +195,6 @@
                                             }
                                         }
 
-                                        if ( !row.selected )
-                                        {
-                                            row.style = {};
-                                        }
-
                                     }
 
                                 } )
@@ -204,7 +202,7 @@
                                 if ( !scope.single )
                                 {
                                     scope.selectedRowEntity.length = 0;
-                                    for ( var i = 0; i < scope.selectedRows.length; i++ )
+                                    for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
                                     {
                                         scope.selectedRowEntity.push( scope.selectedRows[i].entity );
                                     }
@@ -237,11 +235,64 @@
 
                                     } )
                                 }
-
-
                             }
 
+                            //阻止事件冒泡
+                            scope.stopEvt = function ( obj , evt )
+                            {
+                                var e = (evt) ? evt : window.event;
+                                e.stopPropagation();
+                            }
 
+                            scope.checkRow = function ( row )
+                            {
+                                if( row )
+                                {
+                                    if ( row.selected )
+                                    {
+                                        row.style = {'background-color' : gridConstants.ROW_SELECT_COLOR};
+                                        var flag = true;
+                                        if ( scope.selectedRows.length > 0 )
+                                        {
+                                            for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
+                                            {
+                                                if ( row.uid == scope.selectedRows[i].uid )
+                                                {
+                                                    flag = false;
+                                                }
+                                            }
+                                        }
+
+                                        if ( flag )
+                                        {
+                                            scope.selectedRows.push( row );
+
+                                            scope.sortSelectedRows( scope.selectedRows );
+                                        }
+                                    }
+                                    else
+                                    {
+                                        row.style = {};
+
+                                        for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
+                                        {
+                                            if ( row.uid == scope.selectedRows[i].uid )
+                                            {
+                                                scope.selectedRows.splice( i , 1 );
+                                            }
+                                        }
+
+                                        scope.sortSelectedRows( scope.selectedRows );
+                                    }
+
+                                    scope.selectedRowEntity.length = 0;
+                                    for ( var i = 0 ; i < scope.selectedRows.length ; i++ )
+                                    {
+                                        scope.selectedRowEntity.push( scope.selectedRows[i].entity );
+                                    }
+                                    scope.grid.selectedRowEntity = scope.selectedRowEntity;
+                                }
+                            }
                         }
                     };
                 }
