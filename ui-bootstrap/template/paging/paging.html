@@ -2,7 +2,7 @@
 
 
     <ul class="pagination  pull-left ">
-        <li class="{{webPage.curPage == 1 ? 'disabled' : ''}}"><a title="上一页" href="#" class="{{webPage.curPage == 1 ? 'disabled' : ''}}" ng-click="lastPage();">&laquo;</a></li>
+        <li class="{{webPage.curPage == 1 ? 'disabled' : ''}}"><a title="上一页" href="#" class="{{webPage.curPage == 1 ? 'disabled' : ''}}" ng-click="webPage.lastPage();">&laquo;</a></li>
 
         <li  ng-if="webPage.curPage > webPage.pageNum">
             <a title="更多页" href="#" ng-click="webPage.lastPage('...');">...</a>

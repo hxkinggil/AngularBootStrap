@@ -23,6 +23,7 @@
     <script src="factories/GridRow.js"></script>
     <script src="../paging/directive/paging.js"></script>
     <script src="../paging/directive/webpage.js"></script>
+    <!--<script src="ui-bootstrap-grid-tpls-1.0.0.js"></script>-->
     <style>
         .pagelist {
             line-height: 36px;
@@ -60,7 +61,7 @@
 
 </head>
 <body ng-app="test" ng-controller="Main">
-<div style="width: 1000px;height: 100px;margin-left: 300px;margin-top: 100px;">
+<div style="width: 1000px;height: 100px;margin-left: 300px;margin-top: 20px;">
 
     <button type="button" class="btn btn-primary" style="float: left;" ng-click="gridOptions.getSelectedRow()">返回选中行
     </button>
@@ -82,13 +83,12 @@
 
     app.controller( 'Main' , ['$scope', '$http', '$q', function ( $scope , $http , $q )
     {
-        // $scope.gridOptions = { data: 'data' };
         //构建一个表格配置选项
         $scope.gridOptions = {};
         //表格Id
         $scope.gridOptions.id = 'gridDemo';
         //表格标题
-        $scope.gridOptions.title = "人员信息表";
+//        $scope.gridOptions.title = "人员信息表";
         //定义表格单选或复选
         $scope.gridOptions.single = false;
         //是否是合并表格
@@ -99,7 +99,7 @@
         $scope.gridOptions.columnDefs = [
             //visible属性用于列是否可见,true时显示,false时隐藏,默认为true
             {name : "编号" , field : "id" , visible : true,rowSpanGroup:'id'},
-            {name : "姓" , field : "lastName" , filter : 'uppercase',rowSpanGroup:'id'},
+            {name : "姓" ,   field : "lastName" , filter : 'uppercase',rowSpanGroup:'id'},
             {name : "名字" , field : "firstName" , filter : 'uppercase' , visible : false,rowSpanGroup:'id'},
             {name : "年龄" , field : "age"},
             //render可以自定义渲染列,支持html
@@ -119,7 +119,7 @@
             if ( $scope.gridOptions.selectedRowEntity )
             {
                 //
-                alert( JSON.stringify( $scope.gridOptions.selectedRowEntity ) );
+                alert( JSON.stringify( $scope.gridOptions.selectedRowEntity.length ) );
             }
             else
             {
@@ -153,7 +153,7 @@
             params.limit = $scope.gridOptions.webpage.limit;
 
             var datas = new Array();
-            for ( var i = 0 ; i < 10 ; i++ )
+            for ( var i = 0 ; i < 50 ; i++ )
             {
                 var ranValue = Math.random() * 100;
                 datas.push( {id : 'ID'+i , age : 20 + i , firstName : 'firstName' + i , lastName : 'lastName' + i , company : 'google' , currency : ranValue + i , num : i + 1 , totalNum : (ranValue + i) * ( i + 1 ) , 'date' : new Date() , employed : true} );
