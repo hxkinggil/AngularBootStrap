@@ -17,7 +17,10 @@
                 email : '' ,
                 password : '' ,
                 isChecked : '' ,
-                checked : ''
+                obj:{
+                    checked:''
+
+                }
             };
 
             $scope.$watch( 'formSubmit.checked' , function ( newValue , oldValue )
@@ -34,11 +37,13 @@
                 $validator.validate( $scope , 'formSubmit' )
                         .success( function ()
                         {
+                            alert(1);
                             // validated success
                             console.log( 'success' );
                         } )
                         .error( function ()
                         {
+                            alert(2);
                             // validated error
                             console.log( 'error' );
                         } );
@@ -60,16 +65,37 @@
 
 
     <form role="form">
-        <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input type="email" class="form-control" ng-model="formSubmit.required" validator="[email]"
-                   id="exampleInputEmail1" placeholder="Enter email">
-        </div>
-        <div class="form-group">
-            <label for="exampleInputPassword1">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" ng-model="formSubmit.password"
-                   validator="[required]" placeholder="Password">
-        </div>
+        <table>
+            <tr>
+                <td>
+                    aaaaaaa
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="email" class="form-control" ng-model="formSubmit.required" validator="[email]"
+                               id="exampleInputEmail1" placeholder="Enter email">
+                    </div>
+
+                </td>
+                <td>
+                    aaaa
+                </td>
+                <td>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="exampleInputPassword1" ng-model="formSubmit.password"
+                                   validator="[required,number]" placeholder="Password">  <span class="input-group-addon">%</span>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        </table>
+
         <div class="form-group">
             <label for="exampleInputFile">File input</label>
             <input type="file" id="exampleInputFile">
@@ -78,8 +104,7 @@
         </div>
         <div class="checkbox">
             <label>
-                <input id="exampleCheckbox" type="checkbox" ng-model="formSubmit.checked"> Check me out {{isChecked}}
-                <input type="hidden" ng-model="formSubmit.isChecked" validator="[required]"/>
+                <input id="exampleCheckbox" type="checkbox" ng-model="formSubmit.obj.checked"> Check me out {{isChecked}}
             </label>
         </div>
         <button type="submit" class="btn btn-default btn-primary" ng-click="submit();" value="true">Submit</button>
